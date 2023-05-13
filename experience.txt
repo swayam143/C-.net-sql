@@ -1,0 +1,337 @@
+c# used in making games,making console app,mobile app,api's
+for running c# app we have to use visual studio not (visual studio code)
+
+//////////////////////////////////
+
+c# run in .net framework
+
+
+//////////////////////////////////
+
+.net is open source developer program and work on cross platform (works on all os)
+
+
+//////////////////////////////////
+
+console application in c#
+
+Console.WriteLine("Hello World") // writing console in terminal
+
+Console.ReadLine() // reading what console in terminal
+
+
+//////////////////////////////////
+
+
+assign variable in c#
+
+
+int word = 34;
+
+Console.WriteLine("Hello, World!" + word);
+
+
+//////////////////////////////////
+
+
+data types in c#
+
+Integer - int ; // int a = 34
+floating point number - float that ; //  float a = 34.4F or double a = 34.4D
+Characer - char a = "A" ; //  char a = 'r' ==> char comes in single quote
+Boolean - bool ; //  bool a = true
+string inp = "shubh" ; //  string a = "this is string"
+
+
+//////////////////////////////////
+
+Taking input from user and console it
+
+string inp = Console.ReadLine(); //
+
+Console.Write(inp);  //able us to write string in terminal
+
+
+Console.ReadLine(); //show the input we enter in terminal
+
+
+//////////////////////////////////
+
+ctrl+alt ==> select multiple word in console
+ctrl k +ctrl c ===> for comment
+
+//////////////////////////////////
+
+Type Casting
+
+to convert one datatype to another datatype known as Type Casting
+
+
+////////
+
+* There are two types of type Casting
+ 
+1. Implicit Casting
+
+char to int to long to float to double
+
+char can convert to all next to them
+int can convert to all next to them
+long......
+float......
+
+so we can convert char to int as it is next to them 
+char a = 'u';
+int b = a;
+Console.WriteLine(b);
+Console.ReadLine();
+
+
+2. Explicit Casting
+here c# convert datatype for us 
+
+int a = 3.5 ==. it gives error
+
+so for this
+
+int x = (int) 3.5;
+ 
+so this convert float 3.5 to integer
+
+////////
+
+we can also use built in methods to convert data types 
+
+float var = Convert.ToInt32(3.55 )
+
+other methods are convert.ToDouble , .toString 
+
+////////////////////////////////// 
+
+program to say user to enter name and after that say hello username
+
+
+Console.WriteLine("ENter your Name");
+
+string name = Console.ReadLine();
+
+Console.WriteLine("Hey hello" + name);
+
+Console.ReadLine();
+
+
+//////////////////////////////////
+
+
+program when user input number so we have to convert the input to number
+
+like
+
+Console.WriteLine("Enter your Name");
+string name = Console.ReadLine();
+Console.WriteLine("Hey hello" + name);
+Console.WriteLine("How many Candies do you want ?");
+string can = Console.ReadLine();
+Console.WriteLine("You get extra 4 candies" + can + 4); 
+// here if user input 4 than result will be  You get extra 4 candies44
+so for this we can Convert.ToInt32
+use ==> Console.WriteLine("You get extra 4 candies" + " " + (Convert.ToInt32(can) + 4));  extra comma gives prority to task as well
+Console.ReadLine();
+
+
+//////////////////////////////////
+
+Operators in c#==>
+
+1. Arthmetic Operators =>
+int a = 4;
+int b = 6;
+
+Console.WriteLine("The value of a and b is : " + (a+b));
+we can use - , / , * ,  
+
+
+2. Assignment Operators (=) => the assignment operator is (=)
+
+
+3. Logical Operators =>
+Console.WriteLine(true)
+
+
+4. Comparison Operators
+
+
+[{"name ":"John","relationship":"Father","photoUrl":"https://localhost:7235/uploads/father.jpg","audioUrl":"https://localhost:7235/uploads/father.mp3"},{"name":"Suhani","relationship":"Mother","photoUrl":"https://localhost:7235/uploads/mother.webp","audioUrl":"https://localhost:7235/uploads/mother.mp3"},{"name":"Bob","relationship":"Son","photoUrl":"https://localhost:7235/uploads/child.jpg","audioUrl":"https://localhost:7235/uploads/child.mp3"}]
+
+
+
+//////////////////////////////////
+
+
+Steps to make api's in .net entity framework
+
+
+create new project => asp .net core web api => name the project 
+
+
+now we wants to make Students api so for this
+
+in Controller  folder => right click Add => Controller => Api => Api Controller with read/write action => name this StudentController not StudentCOntroller.cs 
+
+Controller Created
+
+Now for data what we want in api 
+
+right click project => Add => New Item => name Student.cs 
+
+SO we use Controller StudentController for api point and class Student.cs for properties we add in api like name
+
+in Student.cs
+
+namespace dyslexia_api  // Project name
+{
+    public class Student // this class is used in controller
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}
+  
+
+In Controller StudentController.cs 
+
+below this line => public class StudentController : ControllerBase
+    {
+
+write 
+
+ static List<Student> students = new List<Student>();
+
+ this is like variable we assign students variable to Student.cs 
+
+ so student =[] and when we insert anythin than it becomes 
+
+ [{
+    id:"1",
+    "name":"shubham" 
+ }]
+
+
+remove <string> with <Student> as we used this class
+
+
+so our all things ready now 
+
+in get we return student like 
+
+
+ [HttpGet]
+        public IEnumerable<Student> Get()
+        {
+            return students;
+        }
+
+
+in getbyid we get by using id and matching like 
+
+
+ [HttpGet("{id}")]
+        public Student Get(int id)
+        {
+            return students.FirstOrDefault(s => s.Id == id);
+        }
+
+
+
+in post we post data in student like 
+
+ [HttpPost]
+        public void Post([FromBody] Student value)
+        {
+            students.Add(value);
+        }
+
+
+in put we find by id and update 
+
+
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] Student value)
+        {
+          int i = students.FindIndex(s => s.Id == id);
+            if(i>=0)
+            {
+                students[i] = value;
+            }
+        }
+
+
+in delete we delete the using id
+
+
+  [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            students.RemoveAll(s => s.Id == id);
+        }
+    }
+
+
+Api making done
+
+
+and our api endpoints make the like this
+
+    [Route("api/[controller]")]
+
+     public class StudentController : ControllerBase
+
+so api endpoint is api/ControllerName =>api/Student
+
+
+
+//////////////////////////////////
+
+
+for cors error in .net web api
+
+
+using Microsoft.AspNetCore.Cors.Infrastructure;
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyCorsPolicy", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+
+app.UseCors("MyCorsPolicy");
+
+
+////////////////////////////////////////
+
+for adding database to web api follow steps ==>
+
+create new Modelin Models folder ==>
+
+
+create Models folder-> right click-> Add-> class->ModelName.cs
+
+than  in ModelName.cs
+
+
+namespace dyslexia_api_with_mysql.Models
+{
+    public class Employee
+    {
+        public int EmployeeId { get; set; }  //This are the all fieldnames we make in databases
+        public string EmployeeName { get; set; }
+        public string Department { get; set; }
+    }
+}

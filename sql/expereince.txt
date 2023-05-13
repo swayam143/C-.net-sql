@@ -1,0 +1,46 @@
+to create database ===>
+
+open sql server management sudio=> expand databases =>right click database and select new database=> enter databse name and ok
+
+now click on that database in list =>right click on table =>new table=>now enter a fieldname  you want to enter like studentid. We can also chnage datatype of particular fields
+
+now we have to set primary key(universal id) so for this right click on studentid field and set it as primary key and below there in Identification Specification => double click (is identity) to yes (so id gerenated is unique)
+then save databse and name it whatever want
+
+in other option select varchar50 =>so we can insert 5o words
+
+if after save table is not showing so disccoennct and connect it shows. 
+
+to edit database right click on database => select edit top 200 row 
+
+to view database right click on database => select top 2000 row 
+
+////////////////////////////////////////
+
+
+using mssmsfor creating table
+
+on database name==> right click New query
+
+create table dbo.Department(
+    DepartmentId int identity(1,1), -- this is unique id 
+    DepartmentName nvarchar(500)
+)
+
+below line insert some data in that databse 
+
+insert into dbo.Department values ('IT')
+insert into dbo.Department values ('Support')
+
+
+we can also insert like  insert into dbo.Department values ('IT','Support')
+
+select * from dbo.Department
+
+than click on execute above
+
+once created disconnect and connect to show table
+
+
+
+////////////////////////////////////////
