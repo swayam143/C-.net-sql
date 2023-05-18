@@ -1,0 +1,186 @@
+In Project Dependies folder help us to know packages we are using in project
+
+appsetting.json file is for connection string or we can take any variable inside it
+
+Program.cs file is the main file in project
+
+//////////////////////////////////////////////
+
+in Models folder =>Category.cs=>
+
+namespace byVideoapi.Models
+{
+    public class Category
+    {
+        public int Id { get; set; }  //id
+        public string Title { get; set; } //Title
+
+        public int DisplayOrder { get; set; } //Display Order
+    }
+}
+
+
+//////////////////////////////////////////////
+
+in Controllers folder => Add Controller => Category.cs  
+
+if we want to provide demo data accordign to our model we can create static list ==>
+
+        public static List<Category> listOfCategories = new List<Category>
+            {
+                new Category { Id = 1, Title = "Samsung", DisplayOrder = 1 },
+                new Category { Id = 2, Title = "Apple", DisplayOrder = 2 },
+                new Category { Id = 3, Title = "Google", DisplayOrder = 3 }
+            };
+
+
+where we assign listOfCategories variable to Category data
+
+
+so to get data we write 
+
+ [HttpGet]
+        public IEnumerable<Category> Get()
+        {
+
+            return listOfCategories;   // here we return that varaible
+        }
+
+
+for post api 
+
+        [HttpPost]
+        public void Post([FromBody]Category category)  //Category is the list we want to add and category is the data
+        {
+            listOfCategories.Add(category);
+        }
+
+
+for put api 
+
+
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody] Category category)
+        {
+            int index = listOfCategories.FindIndex(c => c.Id == id);
+            if (index >= 0)
+            {
+                listOfCategories[index] = category;
+            }
+        }
+
+
+
+for delete api 
+
+    [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            Category category = listOfCategories.FirstOrDefault(c => c.Id == id);
+            if (category != null)
+            {
+                listOfCategories.Remove(category);
+            }
+        }
+
+
+
+//////////////////////////////////////////////
+
+
+no to use dynamic data instead of static array 
+
+in nut get package install Microsoft.EntityFrameworkCore and Microsoft.EntityFrameworkCore.SqlServer
+
+we can check it in installed tab. as it is installed or not
+
+now new folder => Data
+
+in Data=> Add new Class =>ApplicationDbContext.cs
+
+
+in ApplicationDbContext.cs
+
+
+using Microsoft.EntityFrameworkCore;
+
+namespace byVideoapi.Data
+{
+    public class ApplicatonDbContext:DbContext   ==> It is the set of data we get from mysql server
+        {
+        public ApplicatonDbContext(DbContextOptions<ApplicatonDbContext> options) : base(options)
+        {
+            
+        }
+        public DbSet<Category> Categories { get; set; } //THe name of table in Database
+    }
+}
+
+
+than in appsetting.json 
+
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=EcomApi;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true;"
+  },
+
+than in program.cs file add this line
+
+builder.Services.AddDbContext<DbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+Our databse is set now 
+
+
+## Now we have to make api endpoint 
+
+in Controller => Add Controller => select api => read and write options => Category.cs
+
+
+the controller is wrtten in category controllers of videapi in github . top of the code is very important.
+
+
+Very important if data base is not created so just use this comand it will create if we dont have databse
+
+ in program.cs
+
+var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.EnsureCreated();
+}
+
+
+////////////////////////////////////////
+
+
+if any namepace comes click on that word and ctrl + . 
+
+
+////////////////////////////////////////
+
+
+status code 
+
+we have to use IActionResult
+
+public IActionResult Get()
+{
+
+//Notfound
+
+return NotFound()
+return BadRequest()
+
+
+//200 status === Ok
+
+return Ok()
+
+or we can use
+
+return StatusCode(StatusCodes.Status201Created) // if any cmes  solve by ctrl + .
+
+
+}
